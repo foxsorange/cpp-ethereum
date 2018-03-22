@@ -1,5 +1,4 @@
 [
-{ "name": "test_getClientInfo", "params": [], "order": [], "returns": ""},
 { "name": "test_getPostState", "params": [{}], "order": [], "returns": ""},
 { "name": "test_addTransaction", "params": [{}], "order": [], "returns": ""},
 { "name": "test_setChainParams", "params": [{}], "order": [], "returns": false},
