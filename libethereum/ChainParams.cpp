@@ -302,10 +302,10 @@ void checkFieldExist(js::mObject const& _config, string const& _field)
 
 js::mObject prepareFromGeneralConfig(js::mObject const& _config)
 {
-    checkFieldExist(_config, "params");
+    checkFieldExist(_config, c_params);
     checkFieldExist(_config, "state");
-    checkFieldExist(_config, "genesis");
-    js::mObject params = _config.at("params").get_obj();
+    checkFieldExist(_config, c_genesis);
+    js::mObject params = _config.at(c_params).get_obj();
     checkFieldExist(params, "forkRules");
     string forkRules = params.at("forkRules").get_str();
     Network rules;
@@ -328,26 +328,26 @@ js::mObject prepareFromGeneralConfig(js::mObject const& _config)
     js::read_string(genesisInfo(rules), v);
     js::mObject& obj = v.get_obj();
 
-    checkFieldExist(params, "blockReward");
-    js::mObject& originalParams = obj["params"].get_obj();
-    originalParams["blockReward"] = params["blockReward"];
+    checkFieldExist(params, c_blockReward);
+    js::mObject& originalParams = obj[c_params].get_obj();
+    originalParams[c_blockReward] = params[c_blockReward];
 
     // overwrite with general config
-    obj["sealEngine"] = params.at("miningMethod");
+    obj[c_sealEngine] = params.at("miningMethod");
 
     // copy account configuration
     for (auto const account : _config.at("state").get_obj())
-        obj["accounts"].get_obj().emplace(account);
+        obj[c_accounts].get_obj().emplace(account);
 
     // overwrite genesis configuration
-    js::mObject& cppGenesis = obj["genesis"].get_obj();
-    js::mObject const& genGenesis = _config.at("genesis").get_obj();
+    js::mObject& cppGenesis = obj[c_genesis].get_obj();
+    js::mObject const& genGenesis = _config.at(c_genesis).get_obj();
 
     // Overwrite genesis fields
     // Minimum fields from state tests
-    cppGenesis["author"] = genGenesis.at("coinbase");
-    cppGenesis["difficulty"] = genGenesis.at("difficulty");
-    cppGenesis["gasLimit"] = genGenesis.at("gasLimit");
-    cppGenesis["timestamp"] = genGenesis.at("timestamp");
+    cppGenesis[c_author] = genGenesis.at("coinbase");
+    cppGenesis[c_difficulty] = genGenesis.at(c_difficulty);
+    cppGenesis[c_gasLimit] = genGenesis.at(c_gasLimit);
+    cppGenesis[c_timestamp] = genGenesis.at(c_timestamp);
     return v.get_obj();
 }
