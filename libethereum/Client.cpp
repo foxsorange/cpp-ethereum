@@ -269,6 +269,7 @@ void Client::reopenChain(ChainParams const& _p, WithExisting _we)
     sealEngine()->cancelGeneration();
 
     {
+		setAuthor(_p.author);
         WriteGuard l(x_postSeal);
         WriteGuard l2(x_preSeal);
         WriteGuard l3(x_working);
@@ -289,7 +290,10 @@ void Client::reopenChain(ChainParams const& _p, WithExisting _we)
     }
 
     if (auto h = m_host.lock())
-        h->reset();
+	{
+		h->reset();
+		h->completeSync();  // set sync state to idle for mining
+	}
 
     startedWorking();
     doWork();
