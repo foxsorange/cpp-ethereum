@@ -121,6 +121,9 @@ set(UTILS_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/utils")
 
 configure_project()
 
+set(EVMC_BUILD_TESTS OFF)
+add_subdirectory(evmc)
+
 if (HERA)
     add_subdirectory(hera)
 endif()
